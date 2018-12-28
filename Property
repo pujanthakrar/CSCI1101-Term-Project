@@ -1,0 +1,30 @@
+package classes;
+
+public class Property{
+   
+   private Player owner;//starts as bank 
+   private int boardposition;//index from 0 to 39
+   private int price;
+   private String name;
+   private boolean mortgage;
+   
+   
+   public Property(int p, int pr, String n){
+      owner = null;//when a player lands on property it checks the owner to determine what to do
+      boardposition = p;//position on board whihc this property exists
+      name = n;
+      mortgage = false;//boolean as to whether property is mortgaged, player receives half price when mortgaging
+      price = pr;//price when buying from bank
+   }
+   
+   //get and set methods
+   public void setPosition(int p){boardposition = p;}
+   public void setOwner(Player o){owner = o;}
+   public void setMortgage(boolean b){mortgage = b;}
+   
+   public int getPosition(){return boardposition;}
+   public Player getOwner(){return owner;}
+   public boolean getMortgage(){return mortgage;}
+   public int getPrice(){return price;}
+   
+}

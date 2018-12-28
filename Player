@@ -1,0 +1,116 @@
+package classes;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Player {
+	
+	private int orderNum;
+	private boolean goAgain;
+	private ArrayList<Property> ownedProperties = new ArrayList<Property>();
+	private int money = 1500;
+	private String name;
+	private int numCards = 0;
+	
+	public int getOrderNum(){ return orderNum; };
+	public boolean goAgain(){ return goAgain; };
+	
+	public Player(){
+	}
+	
+	public Player(String n){
+		name = n;
+	}
+	
+	public Player(String n, int m){
+		name = n;
+		money = m;
+	}
+	
+	
+	public String getName(){ return name; }
+	
+	
+	public void move(int d1, int d2){
+		
+	}
+	
+	public void trade(Player p){
+		
+	}
+	
+	public void inventoryRemove(Property p){
+		boolean removed = false;
+		for(int i=0; i<ownedProperties.size();i++)
+			if(ownedProperties.get(i).getName().equals(p.getName())){
+				ownedProperties.remove(i);
+				removed = true;
+			}
+			
+		if (!removed)
+			System.out.println("\n\tError - this player does not own this property");
+			
+	}
+	
+	public void inventoryRemove(int m){
+		
+		if (m>money)
+			System.out.println("\n\tError - this player does not have enough money");
+		else
+			money -= m;
+		
+	}
+	
+	public void inventoryRemove(String card){
+		
+		if (card.equals("GetOutOfJail"))
+			numCards -= 1;
+		
+		else
+			System.out.println("\n\tError - incorrect input. Only Get Out of Jail Free cards can be held by players");
+		
+	}
+	
+	public void inventoryAdd(Property p){
+		
+		boolean owned = false;
+		for(int i=0; i<ownedProperties.size();i++)
+			if(ownedProperties.get(i).getName().equals(p.getName()))
+				owned = true;
+			
+		if (owned)
+			System.out.println("\n\tError - this player");
+		
+	}
+	
+	public void inventoryAdd(int m){
+		
+	}
+	
+	public void inventoryAdd(String card){
+		
+	}
+	
+	public void mortgage(Player b){
+		
+		// Show full list of owned properties, have user select which one to mortgage / demortgage
+		
+		// Confirm the price to mortgage / demortgage, have user confirm
+		
+		// Convert property to mortgaged / demortgaged, add / remove money from player's total
+		
+	}
+	
+	public void sellHouses(Player b){
+		
+		// Show full list of owned properties w/ houses / hotels, have user select which one
+		
+		// Choose number of houses to sell if more than one
+		
+		// Confirm money to be received for selling, have user confirm
+		
+		// Remove houses from property, add money to player's total
+		
+	}
+	
+}

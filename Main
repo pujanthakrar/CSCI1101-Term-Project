@@ -1,0 +1,223 @@
+package classes;
+
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args){
+		
+		// ** Set number of players, player colors / icons, names, etc.
+		// ** Randomize turn order
+		
+		Player p1 = new Player("Geoff");
+		Player p2 = new Player("Bob");
+		Player p3 = new Player("Sally");
+		Player p4 = new Player("Nancy");
+		//Player activePlayer = new Player();
+		Player[] players = new Player[]{p1, p2, p3, p4};
+		Player bank = new Player("Bank", 100000000);
+		//int turn = 1;
+		
+		//Board gameBoard = new Board();
+		Scanner kbInput = new Scanner(System.in);
+		
+		//requestTrade(p1, p2);
+		
+		/*------------------------ Game Loop
+		boolean gameOver = false;
+		
+		while (gameOver == false){            <-- Game loop start
+			
+			// Detects whose turn it is
+			for (int i=0; i<4; i++)
+				if (players[i].getOrderNum() == turn)
+					activePlayer = players[i];
+			
+			// ** Player whose turn it is (activePlayer) rolls dice
+			activePlayer.move((int)(1 + (Math.random()* 6)), (int)(1 + (Math.random()* 6)));
+			// ** Event occurs (player has moved, money has been changed, properties added, etc)
+			gameBoard.event(activePlayer);			
+		*/
+		
+			//-------------------------------------------------------------------------- PLAYER INTERACTIONS
+			
+			// ** After event resolves all players now have an opportunity to
+			// 1. Offer a trade
+			// 2. Mortgage / demortgage property
+			// 3. Sell houses / hotels to raise money
+			 
+			boolean tradesFinished = false;
+			while (tradesFinished == false){
+				
+				String userInput = "";
+				
+				//------------------------ Checks if Player Interaction is Necessary
+				System.out.print("\n---> Upkeep: would any players like to trade, mortage a property, or sell houses?\n(Yes / No): ");
+				userInput = kbInput.nextLine();
+				
+				if (userInput.equalsIgnoreCase("no"))
+					tradesFinished = true;
+				
+				else if (userInput.equalsIgnoreCase("yes")){
+					
+					//------------------------ Determine Player Who Wants to Initiate Interaction
+					boolean backToMain = false;
+					while (backToMain == false) {
+						
+						Player upkeepPlayer = null;
+						
+						// Asks which player is acting, prints list of options, records input
+						System.out.print("\nWhich player would like to act?\n(");
+						for (int i=0; i<players.length; i++) {
+							System.out.print(players[i].getName() + " / ");
+						}
+						System.out.print("Exit): ");
+						userInput = kbInput.nextLine();
+						
+						// Determines if input is valid
+						for (int i=0; i<players.length; i++)
+							if (userInput.equalsIgnoreCase(players[i].getName())){
+								upkeepPlayer = players[i];
+							}
+						if (userInput.equalsIgnoreCase("exit"))
+							backToMain = true;
+						else if (upkeepPlayer == null && backToMain == false)
+							System.out.println("\n\tError - must select a valid player name");
+						
+						//------------------------ Determines What Player Wants to Do
+						if (upkeepPlayer != null){
+							
+							boolean backToChoosePlayer = false;
+							while (backToChoosePlayer == false){
+								
+								boolean actAgainPrompt = false;
+								System.out.print("\nWhat would you like to do " + upkeepPlayer.getName() + "?\n(Trade / Mortgage / Sell / Back): ");
+								userInput = kbInput.nextLine();
+								
+								//------------------------ Trades
+								if (userInput.equalsIgnoreCase("trade")){
+									
+									Player otherPlayer = null;
+									boolean backToActions = false;
+									while (backToActions == false) {
+										
+										// Asks which player to trade with, prints list of options, records input
+										System.out.print("\nWho would you like to trade with?\n(");
+										for (int i=0; i<players.length; i++) {
+											if (players[i].getName() != upkeepPlayer.getName()){
+												System.out.print(players[i].getName() + " / ");
+											}
+										}
+										System.out.print("Back): ");
+										userInput = kbInput.nextLine();
+										
+										// Determines if input is valid
+										for (int i=0; i<players.length; i++)
+											if (userInput.equalsIgnoreCase(players[i].getName()) && !userInput.equalsIgnoreCase(upkeepPlayer.getName())){
+												otherPlayer = players[i];
+												backToActions = true;
+											}
+										if (userInput.equalsIgnoreCase("back")){
+											backToActions = true;
+										}
+											
+										else if (backToActions == false)
+											System.out.println("\n\tError - must select a valid player name (can't be your own)");
+										
+									}
+									
+									// If another player has been chosen, initiates a trade with them
+									if (otherPlayer != null){
+										//requestTrade(upkeepPlayer, otherPlayer);
+										System.out.println("\nBegin Trade");
+										actAgainPrompt = true;
+									}
+									
+								}
+								
+								//------------------------ Mortgage House(s)
+								else if (userInput.equalsIgnoreCase("mortgage")){
+									System.out.println("\nBegin Mortgage");
+									actAgainPrompt = true;					
+								}
+								
+								//------------------------ Sell House(s)
+								else if (userInput.equalsIgnoreCase("sell")){
+									System.out.println("\nBegin Sell");
+									actAgainPrompt = true;
+								}
+								
+								//------------------------ Exit Back to Main Menu
+								else if (userInput.equalsIgnoreCase("back")){
+									backToChoosePlayer = true;
+								}
+								
+								//------------------------ Error							
+								else {
+									System.out.println("\n\tError - must choose Trade, Mortgage, or Sell");
+								}
+								
+								//------------------------ Determines if same player would like to act again
+								while (actAgainPrompt == true) {
+									System.out.print("\nWould you like to do anything else?\n(Yes / No): ");
+									userInput = kbInput.nextLine();
+									if (userInput.equalsIgnoreCase("yes"))
+										actAgainPrompt = false;
+									else if (userInput.equalsIgnoreCase("no")){
+										backToChoosePlayer = true;
+										backToMain = true;
+										actAgainPrompt = false;
+									}
+									else
+										System.out.println("\n\tError - must enter yes or no");
+								}
+								
+							}
+							
+						}
+						
+					}
+					
+				}
+				
+				else
+					System.out.println("\n\tError - must enter yes or no");
+				
+			}
+			
+			// -------------------------------------------------------------------------- END PLAYER INTERACTIONS 
+			
+			// Goes to the next person's turn if doubles weren't rolled
+			/*if (!activePlayer.goAgain())
+				turn++;
+			
+		//}        <-- Game loop close */
+		
+		kbInput.close();
+			
+	}
+	
+	public static void requestTrade(Player sender, Player receiver){
+		
+
+		System.out.println("\n\n---> Trade has been requested between: " + sender.getName() + " & " + receiver.getName() + "\n");
+		
+		// Have player select what they would like to trade (money, properties, get out of jail cards)
+		boolean chosenTradeTo = false;
+		/*while (chosenTradeTo == false) {
+			
+			System.out.print("\n" + sender.getName() + ", what would you like to trade?\n(Properties / Money / Cards): ");
+			
+			
+		}*/
+		
+		// Have player select what they would like to trade for (bring up p's assets)
+		
+		// Bring up confirm / reject screen for p to choose
+		
+		// If yes, remove asset from p and add to this, remove asset from this and add to p
+		
+		
+	}
+	
+}

@@ -1,0 +1,57 @@
+   //This method checks if a user owns both utilities, values 12 and 28 are relative to original board
+   public int getUtility(){
+      int util = 0;
+      for(int i = 0; i < properties.size(); i++){
+         if(properties.get(i).getPosition() == 12)
+            util++;
+         else if(properties.get(i).getPosition() == 28)
+            util++;
+      }
+      return util;
+   }
+   
+   //This method checks the number of railroads a User owns, values 5, 15, 25 and 35 are relative to original board
+   public int getRails(){
+      int rails = 0;
+      for(int i = 0; i < properties.size(); i++){
+         if(properties.get(i).getPosition() == 5)
+            rails++;
+         else if(properties.get(i).getPosition() == 15)
+            rails++;
+         else if(properties.get(i).getPosition() == 25)
+            rails++;
+         else if(properties.get(i).getPosition() == 35)
+            rails++;
+      }
+      return rails;
+   }
+   
+   //This method returns a boolean as to whether a owner has all of a colour of property, its assumes each colour is in its own
+   //block of 5 spaces, ei Brown is from 0-4 on board, values 12 and 28 represent utilities and are thus ignored
+   public boolean hasAllType(int p){
+      int section = p/5;//find section to test
+      int num = 0;
+      //check to see how many are owned in section;
+      for(int i = 0; i < properties.size(); i++){
+         if(properties.get(i).getPosition() > (section*5) && properties.get(i).getPosition() < (section*5+5))
+            num++;
+      }
+      if(section == 2){ //section 2 and 5 contain the utilities
+         for(int i = 0; i < properties.size(); i++){
+            if(properties.get(i).getPosition() == 12)
+               num--;
+         }
+      }
+      else if(section == 5){
+         for(int i = 0; i < properties.size(); i++){
+            if(properties.get(i).getPosition() == 28)
+               num--;
+         }
+      }
+      if(num == 2 && (section == 0 || section == 7)) //section 0 and 7 only have 2 properties in clour set
+         return true;
+      else if(num == 3)
+         return true;
+      else
+         return false;
+   }
